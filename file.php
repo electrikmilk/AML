@@ -15,3 +15,12 @@ try {
 
 include_once 'errors.php';
 include_once 'tokens.php';
+include_once 'lexer.php';
+
+try {
+	$lex = new Lexer( $file, true );
+	print_r( $lex->tokens ) . "\n";
+} catch ( LexError $lex_error ) {
+	dump_error( 'LexError', $lex_error );
+	die;
+}
