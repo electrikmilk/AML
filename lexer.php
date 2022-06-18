@@ -12,9 +12,10 @@ class Lexer
 	public array $tokens = [];
 
 	/**
-	 * @param string $file
+	 * @param string $input
+	 * @param bool $file
 	 *
-	 * @throws LexError
+	 * @throws AMLError
 	 */
 	public function __construct( string $input, bool $file = false )
 	{
@@ -24,14 +25,18 @@ class Lexer
 				$this->line( $buffer );
 			}
 		} else {
-			$input = explode( "\n", $input );
+			$input = explode( PHP_EOL, $input );
 			foreach ( $input as $line ) {
 				$this->line( $line );
 			}
 		}
 	}
 
-	private function line( string $line )
+	/**
+	 * Prepare Line
+	 * @throws AMLError
+	 */
+	private function line( string $line ): void
 	{
 		$this->line_chars = str_split( $line );
 		$this->line_len = count( $this->line_chars );
@@ -40,13 +45,13 @@ class Lexer
 		++$this->line;
 	}
 
-	private function reset_char_pos()
+	private function reset_char_pos(): void
 	{
 		$this->pos = -1;
 		$this->advance_char();
 	}
 
-	private function advance_char()
+	private function advance_char(): void
 	{
 		++$this->pos;
 		$this->current_char = ( $this->pos < $this->line_len ) ? $this->line_chars[ $this->pos ] : null;
@@ -54,15 +59,15 @@ class Lexer
 
 	/**
 	 * Tokenize characters in line
-	 * @throws LexError
+	 * @throws AMLError
 	 */
-	private function tokenize_line()
+	private function tokenize_line(): void
 	{
 		while ( $this->current_char !== null ) {
 			/* DEBUG */
 			// echo "$this->line:$this->pos ($this->line_len) = $this->current_char\n";
 			$matching_token = TOKEN::tryFrom( $this->current_char );
-			if ( in_array( $this->current_char, [ ' ', "\t", "\n" ], true ) ) {
+			if ( in_array( $this->current_char, [ ' ', "\t", PHP_EOL ], true ) ) {
 				$this->advance_char();
 			} elseif ( $matching_token ) {
 				$this->tokens[ $this->line ][] = $matching_token;
@@ -70,16 +75,16 @@ class Lexer
 			} elseif ( str_contains( TOKEN::INT->value, $this->current_char ) ) {
 				$this->tokens[ $this->line ][] = $this->tokenize_int();
 			} else {
-				throw new LexError( $this, 1 );
+				throw new AMLError( $this, "Illegal character $this->current_char" );
 			}
 		}
 	}
 
 	/**
 	 * Tokenize Integers and Floats
-	 * @throws LexError
+	 * @throws AMLError
 	 */
-	private function tokenize_int()
+	private function tokenize_int(): array
 	{
 		$float = false;
 		$int_str = '';
@@ -88,7 +93,7 @@ class Lexer
 				if ( $float !== true ) {
 					$float = true;
 				} else {
-					throw new LexError( $this, 2 );
+					throw new AMLError( $this, 'Invalid float' );
 				}
 			}
 			$int_str .= $this->current_char;
@@ -98,18 +103,5 @@ class Lexer
 			return [ TOKEN::FLOAT, (double)$int_str ];
 		}
 		return [ TOKEN::INT, (int)$int_str ];
-	}
-}
-
-class LexError extends MainException
-{
-	public function __construct( Lexer $instance, $code = 0 )
-	{
-		$message = match ( $code ) {
-			1 => "Illegal character $instance->current_char",
-			2 => 'Invalid float',
-			default => 'Unknown Error',
-		};
-		parent::__construct( $instance, $message );
 	}
 }

@@ -23,8 +23,8 @@ while ( true ) {
 	try {
 		$lexer = new Lexer( $input );
 		print_r( $lexer->tokens );
-	} catch ( LexError $e ) {
-		dump_error( 'LexError', $e );
+	} catch ( AMLError $e ) {
+		dump_error( 'LexerError', $e );
 	}
 	echo "\n";
 }

@@ -20,7 +20,7 @@ include_once 'lexer.php';
 try {
 	$lex = new Lexer( $file, true );
 	print_r( $lex->tokens ) . "\n";
-} catch ( LexError $lex_error ) {
-	dump_error( 'LexError', $lex_error );
+} catch ( AMLError $lex_error ) {
+	dump_error( 'LexerError', $lex_error );
 	die;
 }

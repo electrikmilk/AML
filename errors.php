@@ -9,14 +9,14 @@ function shell_banner( string $str )
 	return "$line$str$line\n";
 }
 
-function dump_error( string $type, $error )
+function dump_error( string $type, AMLError $error )
 {
 	echo shell_banner( $type );
 	echo $error->getMessage() . "\n\n";
 	echo $error->getTraceAsString() . "\n";
 }
 
-class MainException extends Exception
+class AMLError extends Exception
 {
 	public function __construct( $instance, $message )
 	{
