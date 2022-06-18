@@ -1,4 +1,4 @@
-# ArithMatic Language
+# ArithMetic Language
 
 ### This is basically a programming language, but not really.
 
