@@ -7,14 +7,18 @@ that passes instructions to the interpreter to execute.
 
 ## Usage
 
-```console
-aml % php file.php test.aml
-// prints tokens...
-```
+Interactive shell:
 
 ```console
-aml % php shell.php
+aml % php aml
 > 2 + 2
 // prints tokens...
 > _
+```
+
+... or use a file:
+
+```console
+aml % php aml test.aml
+// prints tokens...
 ```
