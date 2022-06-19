@@ -39,7 +39,7 @@ function print_line( int $num, string $line, $col = null )
 		$line = str_replace( $error_column, style( $error_column, RED, BOLD, UNDERLINED ), $line );
 	}
 	++$num;
-	return " $num | $line";
+	return " $num " . style( '|', DIM ) . " $line";
 }
 
 class AMLError extends Exception

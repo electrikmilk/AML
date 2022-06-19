@@ -26,7 +26,14 @@ class Interpreter
 
 	public function output( string $str ): void
 	{
-		echo "$str\n";
+		global $file;
+		$equals = style( '=', DIM );
+		if ( $file ) {
+			$lines = explode( PHP_EOL, file_get_contents( $file ) );
+			echo style( $lines[ $this->line - 1 ], YELLOW ) . " $equals " . style( $str, GREEN, BOLD ) . "\n";
+		} else {
+			echo "$equals " . style($str,GREEN,BOLD)." \n";
+		}
 	}
 
 	public function do_operation( string $operation, mixed $value ): void
