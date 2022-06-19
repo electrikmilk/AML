@@ -11,21 +11,18 @@ Interactive shell:
 
 ```console
 aml % php aml
-Example: 2 + 2. Use "exit" or "q" to close.
-> 2 + 2
-4
-
-> _
 ```
+
+![Interactive](https://i.imgur.com/vSJjw5k.png)
 
 ... or use a file:
 
 ```console
 aml % php aml test.aml
-4
-4
-10
-0.5
-0.3
-0.3
 ```
+
+![File](https://i.imgur.com/wLd9WKu.png)
+
+Detailed error handling:
+
+![Error](https://i.imgur.com/HVkMklg.png)
