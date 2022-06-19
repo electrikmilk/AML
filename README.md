@@ -11,8 +11,10 @@ Interactive shell:
 
 ```console
 aml % php aml
+Example: 2 + 2. Use "exit" or "q" to close.
 > 2 + 2
-// prints tokens...
+4
+
 > _
 ```
 
@@ -20,5 +22,10 @@ aml % php aml
 
 ```console
 aml % php aml test.aml
-// prints tokens...
+4
+4
+10
+0.5
+0.3
+0.3
 ```

@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright (c) 2022 Brandon Jordan
- * Last Modified: 6/19/2022 12:3
+ * Last Modified: 6/19/2022 12:7
  */
 
 // styles
@@ -17,8 +17,10 @@ const CYAN = 36;
 
 include_once 'includes/errors.php';
 include_once 'includes/tokens.php';
+
 include_once 'includes/lexer.php';
 include_once 'includes/parser.php';
+include_once 'includes/interpreter.php';
 
 function input(): string
 {
@@ -44,9 +46,13 @@ function interpret( string $input, bool $file = false ): void
 	}
 	try {
 		$parse = new Parser( $lex->tokens );
-		print_r( $parse->tokens );
 	} catch ( AMLError $parse_error ) {
 		dump_error( 'ParserError', $parse_error );
+	}
+	try {
+		$interpret = new Interpreter( $parse->tokens );
+	} catch ( AMLError $interpret_error ) {
+		dump_error( 'InterpreterError', $interpret_error );
 	}
 }
 
