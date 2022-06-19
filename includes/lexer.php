@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright (c) 2022 Brandon Jordan
- * Last Modified: 6/18/2022 22:1
+ * Last Modified: 6/19/2022 12:2
  */
 
 class Lexer
@@ -78,7 +78,7 @@ class Lexer
 			} elseif ( str_contains( TOKEN::INT->value, $this->current_char ) ) {
 				$this->tokens[ $this->line ][ $this->pos ] = $this->tokenize_int();
 			} else {
-				throw new AMLError( $this, "Illegal character $this->current_char" );
+				throw new AMLError( $this, "Illegal character '$this->current_char'." );
 			}
 		}
 	}
@@ -96,7 +96,7 @@ class Lexer
 				if ( $float !== true ) {
 					$float = true;
 				} else {
-					throw new AMLError( $this, 'Invalid float' );
+					throw new AMLError( $this, 'Invalid floating point integer.' );
 				}
 			}
 			$int_str .= $this->current_char;
