@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) 2022 Brandon Jordan
+ * Last Modified: 6/18/2022 22:1
+ */
 
 class Lexer
 {
@@ -25,8 +29,7 @@ class Lexer
 				$this->line( $buffer );
 			}
 		} else {
-			$input = explode( PHP_EOL, $input );
-			foreach ( $input as $line ) {
+			foreach ( explode( PHP_EOL, $input ) as $line ) {
 				$this->line( $line );
 			}
 		}
@@ -70,10 +73,10 @@ class Lexer
 			if ( in_array( $this->current_char, [ ' ', "\t", PHP_EOL ], true ) ) {
 				$this->advance_char();
 			} elseif ( $matching_token ) {
-				$this->tokens[ $this->line ][] = $matching_token;
+				$this->tokens[ $this->line ][ $this->pos ] = $matching_token;
 				$this->advance_char();
 			} elseif ( str_contains( TOKEN::INT->value, $this->current_char ) ) {
-				$this->tokens[ $this->line ][] = $this->tokenize_int();
+				$this->tokens[ $this->line ][ $this->pos ] = $this->tokenize_int();
 			} else {
 				throw new AMLError( $this, "Illegal character $this->current_char" );
 			}
