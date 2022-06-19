@@ -1,13 +1,14 @@
 <?php
 /*
  * Copyright (c) 2022 Brandon Jordan
- * Last Modified: 6/19/2022 12:7
+ * Last Modified: 6/19/2022 18:10
  */
 
 // styles
 const BOLD = 1;
 const DIM = 2;
 const INVERTED = 7;
+const UNDERLINED = 4;
 
 // color
 const RED = 31;
@@ -21,6 +22,8 @@ include_once 'includes/tokens.php';
 include_once 'includes/lexer.php';
 include_once 'includes/parser.php';
 include_once 'includes/interpreter.php';
+
+$input = null;
 
 function input(): string
 {
@@ -37,22 +40,28 @@ function style( string $line, ...$styles ): string
 	return "\033[0m\033[" . implode( ';', $styles ) . "m$line\033[0m";
 }
 
-function interpret( string $input, bool $file = false ): void
+function interpret( string $code, bool $file = false ): void
 {
+	global $input;
+	$input = $code;
 	try {
-		$lex = new Lexer( $input, $file );
+		$lex = new Lexer( $code, $file );
 	} catch ( AMLError $lex_error ) {
 		dump_error( 'LexerError', $lex_error );
 	}
-	try {
-		$parse = new Parser( $lex->tokens );
-	} catch ( AMLError $parse_error ) {
-		dump_error( 'ParserError', $parse_error );
+	if ( isset( $lex->tokens ) ) {
+		try {
+			$parse = new Parser( $lex->tokens );
+		} catch ( AMLError $parse_error ) {
+			dump_error( 'ParserError', $parse_error );
+		}
 	}
-	try {
-		$interpret = new Interpreter( $parse->tokens );
-	} catch ( AMLError $interpret_error ) {
-		dump_error( 'InterpreterError', $interpret_error );
+	if ( isset( $parse->tokens ) ) {
+		try {
+			$interpret = new Interpreter( $parse->tokens );
+		} catch ( AMLError $interpret_error ) {
+			dump_error( 'InterpreterError', $interpret_error );
+		}
 	}
 }
 
@@ -70,11 +79,11 @@ if ( isset( $argv[ 1 ] ) ) {
 		die( style( 'Error:', RED, BOLD ) . ' ' . $e->getMessage() . "\n" );
 	}
 } else {
-	echo style( "Example: 2 + 2. Use \"exit\" or \"q\" to close.\n", CYAN, BOLD );
+	echo style( "Enter an equation and press return. Type \"q\" to close.\n", CYAN, BOLD );
 	while ( true ) {
 		echo style( '> ', GREEN );
 		$input = input();
-		if ( $input === 'exit' || $input === 'q' ) {
+		if ( $input === 'q' ) {
 			die;
 		}
 		interpret( $input );
