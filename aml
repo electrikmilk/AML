@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Copyright (c) 2022 Brandon Jordan
  * Last Modified: 6/18/2022 21:52
  */

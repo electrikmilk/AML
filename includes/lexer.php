@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright (c) 2022 Brandon Jordan
- * Last Modified: 6/19/2022 12:2
+ * Last Modified: 6/19/2022 18:34
  */
 
 class Lexer
