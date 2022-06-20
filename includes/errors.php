@@ -59,11 +59,11 @@ class AMLError extends Exception
 		$message .= $dashes . " $file ($instance->line:$instance->pos)";
 		$print_lines = [];
 		if ( $instance->line !== 0 ) {
-			$print_lines[] = print_line( $instance->line - 1, $lines[ $instance->line - 2 ] );
+			$print_lines[] = print_line( $instance->line - 1, $lines[ $instance->line - 1 ] );
 		}
-		$print_lines[] = print_line( $instance->line, $lines[ ( $instance->line ) ], $instance->pos );
+		$print_lines[] = print_line( $instance->line, $lines[ $instance->line ], $instance->pos );
 		$print_lines[] = str_repeat( " ", $instance->pos + 5 ) . style( '^', RED );
-		if ( count( $lines ) > 1 ) {
+		if ( isset( $lines[ ( $instance->line + 1 ) ] ) ) {
 			$print_lines[] = print_line( $instance->line + 1, $lines[ $instance->line ] );
 		}
 		foreach ( $print_lines as $line ) {
