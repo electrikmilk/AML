@@ -10,6 +10,8 @@ class Interpreter
 	public int $pos = 0;
 	public mixed $result = 0;
 
+	private array $operator_tokens = [ 'PLUS', 'MINUS', 'MULTIPLY', 'DIVIDE' ];
+
 	/**
 	 * @param array $lines
 	 *
@@ -89,8 +91,11 @@ class Interpreter
 				$this->result = 0;
 			} elseif ( $token_type === 'CLOSURE_END' ) {
 				$this->do_operation( $save_operation, $save_result );
-			} else {
+			} elseif ( in_array( $token_type, $this->operator_tokens, true ) ) {
 				$operation = $token_type;
+			} else {
+				$operation = null;
+				$this->result = 0;
 			}
 		}
 	}
