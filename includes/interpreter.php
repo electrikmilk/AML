@@ -32,7 +32,7 @@ class Interpreter
 			$lines = explode( PHP_EOL, file_get_contents( $file ) );
 			echo style( $lines[ $this->line - 1 ], YELLOW ) . " $equals " . style( $str, GREEN, BOLD ) . "\n";
 		} else {
-			echo "$equals " . style($str,GREEN,BOLD)." \n";
+			echo "$equals " . style( $str, GREEN, BOLD ) . " \n";
 		}
 	}
 
